@@ -45,11 +45,26 @@ jobs:
       - name: Build (CGO enabled for keyring)
         run: CGO_ENABLED=1 go build -o bin/trello-cli ./cmd/trello
 
-      - name: Test keyring
+      - name: Check native macOS keyring availability (empty)
+        timeout-minutes: 1
+        shell: bash
+        env:
+          TRELLO_CLI_KEYRING_BACKEND: keychain
+        run: |
+          ./bin/trello-cli --json auth status | python3 -c 'import json, sys; s = json.load(sys.stdin); assert s["has_key"] is False and s["has_token"] is False'
+
+      - name: Test headless encrypted keyring roundtrip
+        timeout-minutes: 1
+        shell: bash
+        env:
+          TRELLO_CLI_KEYRING_BACKEND: file
+          TRELLO_CLI_KEYRING_PASS: ci-only-dummy-password
         run: |
           echo "testkey" | ./bin/trello-cli auth set-key --stdin
           echo "testtoken" | ./bin/trello-cli auth set-token --stdin
-          ./bin/trello-cli auth status
+          ./bin/trello-cli --json auth status | python3 -c 'import json, sys; s = json.load(sys.stdin); assert s["has_key"] is True and s["has_token"] is True'
+          ./bin/trello-cli auth remove
+          ./bin/trello-cli --json auth status | python3 -c 'import json, sys; s = json.load(sys.stdin); assert s["has_key"] is False and s["has_token"] is False'
 
   build-windows:
     runs-on: windows-latest

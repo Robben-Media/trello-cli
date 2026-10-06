@@ -26,14 +26,14 @@ type Card struct {
 	Name      string   `json:"name"`
 	Desc      string   `json:"desc,omitempty"`
 	Closed    bool     `json:"closed"`
-	IDBoard   string   `json:"idBoard"`              //nolint:tagliatelle // Trello API uses camelCase
-	IDList    string   `json:"idList"`               //nolint:tagliatelle // Trello API uses camelCase
+	IDBoard   string   `json:"idBoard"` //nolint:tagliatelle // Trello API uses camelCase
+	IDList    string   `json:"idList"`  //nolint:tagliatelle // Trello API uses camelCase
 	URL       string   `json:"url,omitempty"`
-	ShortURL  string   `json:"shortUrl,omitempty"`   //nolint:tagliatelle // Trello API uses camelCase
+	ShortURL  string   `json:"shortUrl,omitempty"` //nolint:tagliatelle // Trello API uses camelCase
 	Pos       float64  `json:"pos"`
 	Due       string   `json:"due,omitempty"`
-	IDMembers []string `json:"idMembers,omitempty"`  //nolint:tagliatelle // Trello API uses camelCase
-	IDLabels  []string `json:"idLabels,omitempty"`   //nolint:tagliatelle // Trello API uses camelCase
+	IDMembers []string `json:"idMembers,omitempty"` //nolint:tagliatelle // Trello API uses camelCase
+	IDLabels  []string `json:"idLabels,omitempty"`  //nolint:tagliatelle // Trello API uses camelCase
 }
 
 // Member represents a Trello member.
